@@ -1,5 +1,7 @@
 package com.twu.refactoring;
 
+import java.util.function.Function;
+
 public class NumberCruncher {
     private final int[] numbers;
 
@@ -8,34 +10,30 @@ public class NumberCruncher {
     }
 
     public int countEven() {
-        int count = 0;
-        for (int number : numbers) {
-            if (number % 2 == 0) count++;
-        }
-        return count;
+        return counter(isEven,true);
     }
 
     public int countOdd() {
-        int count = 0;
-        for (int number : numbers) {
-            if (number % 2 == 1) count++;
-        }
-        return count;
+        return counter(isEven,false);
     }
 
     public int countPositive() {
+        return counter(isPositive,true);
+    }
+
+    public int countNegative() {
+        return counter(isPositive,false);
+    }
+
+    private int counter(Function<Integer, Boolean> func, boolean isTrue) {
         int count = 0;
         for (int number : numbers) {
-            if (number >= 0) count++;
+            if (!func.apply(number)^isTrue) count++;
         }
         return count;
     }
 
-    public int countNegative() {
-        int count = 0;
-        for (int number : numbers) {
-            if (number < 0) count++;
-        }
-        return count;
-    }
+    private Function<Integer, Boolean> isPositive = number -> number >= 0;
+
+    private Function<Integer, Boolean> isEven = number -> number % 2 == 0;
 }

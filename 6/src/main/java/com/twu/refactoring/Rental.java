@@ -18,4 +18,16 @@ public class Rental {
     public Movie getMovie() {
         return movie;
     }
+
+    public double getPriceAmount(){
+        double priceAmount = 0;
+        for (Movie.MovieType movieType:Movie.MovieType.values()){
+            if (movieType.getPriceCode() == movie.getPriceCode()){
+                priceAmount += movieType.getInitiatePrice();
+                if (daysRented > movieType.getInitiateDays())
+                    priceAmount += (daysRented - movieType.getInitiateDays()) * movieType.getPerDayPrice();
+            }
+        }
+        return priceAmount;
+    }
 }
